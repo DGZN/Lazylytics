@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\GoogleAnalytics;
 
+use Carbon\Carbon;
+
 class HomeController extends Controller {
 
 	private $GoogleAnalytics;
@@ -29,7 +31,9 @@ class HomeController extends Controller {
 	 */
 	public function __construct( GoogleAnalytics $GoogleAnalytics )
 	{
+		
 		//$this->middleware('auth');
+
 		$this->GoogleAnalytics = $GoogleAnalytics;
 
 	}
@@ -41,6 +45,7 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
+		
 		if( ! $this->GoogleAnalytics->isLoggedIn() ) return \Redirect::to( $this->GoogleAnalytics->getLoginUrl() );
 
 
@@ -150,29 +155,26 @@ class HomeController extends Controller {
 	public function packaged()
 	{
     
-		if( ! $this->GoogleAnalytics->isLoggedIn() ) return \Response::json([
-
-	        'message'   => 'Login required'
-
-	    ]);
+		if ( ! $this->GoogleAnalytics->isLoggedIn() ) return \Response::json([ 'message'   => 'Login required' ]);
 	    
-	    if( ! \Input::has('report_package') || ! \Input::has('report_range') ) return \Response::json([ 'message'   => 'Invalid request' ]);
+	    if ( ! \Input::has('report_package') || ! \Input::has('report_range') ) return \Response::json( [ 'message'   => 'Invalid request' ] );
 
 	 
 	    $view =  'ga:' . \Input::get('view');
 
 	    $payload = $this->buildPackagePayload( $view, \Input::get('report_package'), \Input::get('report_range') );
 
+	    $reportView = ( isset( $payload['report_view'] ) ? $payload['report_view'] : 'report' );
+
 	    $report = $this->GoogleAnalytics->report( $payload );
 
+	    
 	    foreach ( $report['columnHeaders'] as $key => $column ) {
 	    
 	    	$report['columnHeaders'][$key]['name'] = ucfirst( str_replace( 'ga:', '', $report['columnHeaders'][$key]['name'] ) );
 
 	    }
 
-	    $reportView = ( isset($payload['report_view']) ? $payload['report_view'] : 'report' );
-	 
 	    return \View::make( $reportView , [ 
 
 	    	'columns' => $report['columnHeaders'], 
@@ -214,7 +216,6 @@ class HomeController extends Controller {
 
 	    );
 
-
 	    $report = $this->GoogleAnalytics->report( $payload );
 
 
@@ -251,7 +252,7 @@ class HomeController extends Controller {
 	private function buildPackagePayload( $view, $package, $range )
 	{
 		
-		$payload = [];
+		$payload = array( 'view' => $view );
 
 		switch ( $package ) {
 			
@@ -306,21 +307,70 @@ class HomeController extends Controller {
 
 				break;
 
-				
-			
-			default:
-				# code...
-				break;
 		}
 
-		$payload['view'] = $view;
+		switch ( $range ) {
 
-		$payload['range'] = array(
+			case 'today':
 
-			'start_date' => '2015-01-01',
-			'end_date'   => '2015-02-01'
+				$payload['range'] = array(
 
-		);
+					'start_date' => Carbon::now()->yesterday()->toDateString(),
+					'end_date'   => Carbon::now()->toDateString()
+
+				);
+
+				break;
+
+			case 'seven_days':
+
+				$payload['range'] = array(
+
+					'start_date' => Carbon::now()->subWeek(1)->toDateString(),
+					'end_date'   => Carbon::now()->toDateString()
+
+				);
+
+
+				break;
+
+			case 'one_month':
+
+				$payload['range'] = array(
+
+					'start_date' => Carbon::now()->subMonth()->toDateString(),
+					'end_date'   => Carbon::now()->toDateString()
+
+				);
+
+				break;
+
+			case 'three_months':
+
+				$payload['range'] = array(
+
+					'start_date' => Carbon::now()->subMonths(3)->toDateString(),
+					'end_date'   => Carbon::now()->toDateString()
+
+				);
+
+				break;
+
+			case 'one_year':
+
+				$payload['range'] = array(
+
+					'start_date' => Carbon::now()->subYear()->toDateString(),
+					'end_date'   => Carbon::now()->toDateString()
+
+				);
+
+				break;
+			
+		}
+
+
+		
 
 		return $payload;
 	}

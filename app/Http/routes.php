@@ -1,10 +1,21 @@
 <?php
 
+use Carbon\Carbon;
+
 Route::get('/debug', function(){
 
-	$client = new Google_Client;
-	dd($client);
-	return 'Debugging';
+	$dates = array(
+
+		'now' 			=> Carbon::now()->toDateString(),
+		'yesterday'     => Carbon::now()->yesterday()->toDateString(), 
+		'seven days'    => Carbon::now()->subWeek(1)->toDateString(),
+		'one month'     => Carbon::now()->subMonth()->toDateString(),
+		'three months'  => Carbon::now()->subMonths(3)->toDateString(),
+		'one year'      => Carbon::now()->subYear()->toDateString()
+
+	);
+
+	return $dates;
 
 });
 

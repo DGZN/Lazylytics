@@ -123,83 +123,83 @@ class GoogleAnalytics{
 	public function views( $account_id, $property_id )
 	{
   
-    if( ! $this->isLoggedIn() ) return \Redirect::to( $this->getLoginUrl() );
-         
-    try {
+        if( ! $this->isLoggedIn() ) return \Redirect::to( $this->getLoginUrl() );
+             
+        try {
 
-        $service = new \Google_Service_Analytics( $this->client );
+            $service = new \Google_Service_Analytics( $this->client );
 
-        $management_profiles = $service->management_profiles->listManagementProfiles( $account_id, $property_id );
-        
-        $views = [];
- 
-        foreach ( $management_profiles['items'] as $view ) {
+            $management_profiles = $service->management_profiles->listManagementProfiles( $account_id, $property_id );
+            
+            $views = [];
+     
+            foreach ( $management_profiles['items'] as $view ) {
 
-            $views[] = [ 'id' => $view['id'], 'name' => $view['name'] ];
+                $views[] = [ 'id' => $view['id'], 'name' => $view['name'] ];
+
+            }
+     
+            return json_encode($views);
+
+        } catch ( \Google_ServiceException $e ) {
+            
+            return Response::json([
+                'status'    => 0,
+                'code'      => 3,
+                'message'   => $e->getMessage()
+            ]);
 
         }
- 
-        return json_encode($views);
-
-    } catch ( \Google_ServiceException $e ) {
-        
-        return Response::json([
-            'status'    => 0,
-            'code'      => 3,
-            'message'   => $e->getMessage()
-        ]);
-
-    }
 
 	}
 
 	public function metadata()
 	{
   
-    $gcurl = new \Google_IO_Curl( $this->client );
+        $gcurl = new \Google_IO_Curl( $this->client );
 
-    $response = $gcurl->makeRequest( 
+        $response = $gcurl->makeRequest( 
 
-        new \Google_Http_Request( "https://www.googleapis.com/analytics/v3/metadata/ga/columns" )
-    );
- 
-    $data = json_decode( $response->getResponseBody() );
+            new \Google_Http_Request( "https://www.googleapis.com/analytics/v3/metadata/ga/columns" )
+        );
      
-    $items           = $data->items;
-    $data_items      = [];
-    $dimensions_data = [];
-    $metrics_data    = [];
- 
-    foreach( $items as $item ) {
+        $data = json_decode( $response->getResponseBody() );
+         
+        $items           = $data->items;
+        $data_items      = [];
+        $dimensions_data = [];
+        $metrics_data    = [];
+     
+        foreach( $items as $item ) {
 
-        if( $item->attributes->status == 'DEPRECATED' )
-            continue;
- 
-        if( $item->attributes->type == 'DIMENSION' )
-            $dimensions_data[ $item->attributes->group ][] = $item;
- 
-        if( $item->attributes->type == 'METRIC' )
-            $metrics_data[ $item->attributes->group ][] = $item;
+            if( $item->attributes->status == 'DEPRECATED' )
+                continue;
+     
+            if( $item->attributes->type == 'DIMENSION' )
+                $dimensions_data[ $item->attributes->group ][] = $item;
+     
+            if( $item->attributes->type == 'METRIC' )
+                $metrics_data[ $item->attributes->group ][] = $item;
 
-    }
- 
-    $data_items['dimensions'] = $dimensions_data;
-    $data_items['metrics'] = $metrics_data;
- 
-    return $data_items;
+        }
+     
+        $data_items['dimensions'] = $dimensions_data;
+        $data_items['metrics'] = $metrics_data;
+     
+        return $data_items;
 	
 	}
 
 	public function segments()
 	{
     
-    if( ! $this->isLoggedIn() ) return \Redirect::to( $this->getLoginUrl() );
-    
-    $service = new \Google_Service_Analytics( $this->client );
+        if( ! $this->isLoggedIn() ) return \Redirect::to( $this->getLoginUrl() );
+        
+        $service = new \Google_Service_Analytics( $this->client );
 
-    $segments = $service->management_segments->listManagementSegments();
- 
-    return (Array) $segments;
+        $segments = $service->management_segments->listManagementSegments();
+     
+        return (Array) $segments;
 
 	}
 
@@ -220,15 +220,6 @@ class GoogleAnalytics{
         ( ! empty($payload['sort']) ? $options['sort'] = $payload['sort'] : '');
         ( ! empty($payload['filters']) ? $options['filters'] = $payload['filters'] : '');
         ( ! empty($payload['max_results']) ? $options['max-results'] = $payload['max_results'] : '');
-				 
-        // die(json_encode(array(
-
-        // 	'payload'	    => $payload,
-        // 	'dimensions'  => $dimensions,
-        // 	'metrics'			=> $metrics,
-        // 	'options'			=> $options
-
-        // )));
 
         $data = $analytics->data_ga->get( 
 
