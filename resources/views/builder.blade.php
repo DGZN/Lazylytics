@@ -284,7 +284,7 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 													  	
 													  	<h4>Max Results</h4>
 
-													  	<input type="text" id="filters" name="max_results" value="100" >
+													  	<input type="text" id="max_results" name="max_results" value="100" >
 
 													</div>
 

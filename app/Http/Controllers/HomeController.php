@@ -217,11 +217,24 @@ class HomeController extends Controller {
 
 	    $report = $this->GoogleAnalytics->report( $payload );
 
-	    return $report;
 
 	    foreach ( $report['columnHeaders'] as $key => $column ) {
 	    
 	    	$report['columnHeaders'][$key]['name'] = str_replace( 'ga:', '', $report['columnHeaders'][$key]['name'] );
+
+	    }
+
+	    foreach ( $report['items'] as $key => $item ) {
+
+	    	if ( ! is_array($item) ) continue;
+
+	    	foreach( $item as $subKey => $value ) {
+
+	    		if ( floatval($value) <= 0 ) continue;
+
+	    		$report['items'][$key][$subKey] = number_format( floatval($value), 0 );
+
+	    	}
 
 	    }
 	 
