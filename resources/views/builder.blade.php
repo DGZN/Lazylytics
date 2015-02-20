@@ -30,7 +30,7 @@
 
 #myModal .modal-dialog {
 
-	/* width: 1200px; */
+	 width: 1200px; 
 
 }
 
@@ -125,233 +125,240 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 
 	<!-- Vertical Tabl -->
 
+	<div class="report-generator col-lg-12 col-md-12 bhoechie-tab-container">
 
-      <div class="report-generator col-lg-12 col-md-12 bhoechie-tab-container">
-  
-	      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 bhoechie-tab-menu">
+	  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 bhoechie-tab-menu">
 
-	        <div class="list-group">
+	    <div class="list-group">
 
-	          <a href="#" class="list-group-item active text-center">
-	          
-	            <h4 class="glyphicon glyphicon-briefcase"></h4> <br/>Packaged Reports
-	          
-	          </a>
-	          
-	          <a href="#" class="list-group-item text-center">
-	          
-	            <h4 class="glyphicon glyphicon-cog"></h4> <br/> Advanced Reports
-	          
-	          </a>
+	      <a href="#" class="list-group-item active text-center">
+	      
+	        <h4 class="glyphicon glyphicon-briefcase"></h4> <br/>Packaged Reports
+	      
+	      </a>
+	      
+	      <a href="#" class="list-group-item text-center">
+	      
+	        <h4 class="glyphicon glyphicon-cog"></h4> <br/> Advanced Reports
+	      
+	      </a>
 
-	        </div>
-  
-      </div>
-  
-          <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 bhoechie-tab">
-              
-              <!-- Packaged Reports Tab -->
+	    </div>
 
-              <div class="bhoechie-tab-content active">
-								
-								<div class="col-lg-12 col-md-10 col-sm-10 col-xs-10 pull-right">
+		  </div>
+
+	  <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 bhoechie-tab">
+	      
+	      <!-- Packaged Reports Tab -->
+
+	      <div class="bhoechie-tab-content active">
+							
+							<div class="col-lg-12 col-md-10 col-sm-10 col-xs-10 pull-right">
 
 
-									<form method="POST" action="packaged" id="ga-packaged-reports" >
+								<form method="POST" action="packaged" id="ga-packaged-reports" >
 
-										<fieldset>
-										
-										<input type="hidden" name="_token" value="{{ Session::token() }}">
-										<input type="hidden" name="account" value="54979859">
-										<input type="hidden" name="property" value="UA-54979859-1">
-										<input type="hidden" name="view" value="91404392">
+									<fieldset>
+									
+									<input type="hidden" name="_token" value="{{ Session::token() }}">
+									<input type="hidden" name="account" value="54979859">
+									<input type="hidden" name="property" value="UA-54979859-1">
+									<input type="hidden" name="view" value="91404392">
 
-										<br>
+									<br>
 
-										<div class="form-group">
+									<div class="form-group">
 
-											<div class="row">
+										<div class="row">
 
-												<div class="col-md-12">
+											<div class="col-md-12">
 
-													<div class="col-md-6">
+												<div class="col-md-6">
 
-													  	<h4>Reports</h4> <br>
+												  	<h4>Reports</h4> <br>
 
-													  	<select class="form-control" name="report_package" id="report_package">
-															  <!-- <option value="" selected disabled>--- Report Type ---</option> -->
-															  <option value="basic" data-report-type="Basic Overview">Basic</option>
-															  <option value="devices" data-report-type="Device Types" selected>Device Types</option>
-															  <option value="daily" data-report-type="Daily Activity" >Daily Traffic Report</option>
-															  <option value="countries" data-report-type="Traffic by Top 100 Countries" >Countries</option>
-															  <option value="regions" data-report-type="Traffic by Top Regions" >Regions</option>
-															  <option value="technologies" data-report-type="Popular Operating Systems" >Operating Systems</option>
-															</select>
-
-													</div>
-
-													<div class="col-md-6">
-													  	
-													  	<h4>Time Range</h4> <br>
-
-													  	<select class="form-control" name="report_range">
-													  		<!-- <option value="" selected disabled>--- Date Range ---</option> -->
-															  <option value="today">Today</option>
-															  <option value="seven_days">Past Seven Days</option>
-															  <option value="one_month">Past Month</option>
-															  <option value="three_months" selected>Past 3 Months</option>
-															  <option value="one_year">1 Year</option>
-															</select>
-
-													</div>
-
+												  	<select class="form-control" name="report_package" id="report_package">
+														  <!-- <option value="" selected disabled>--- Report Type ---</option> -->
+														  <option value="basic" data-report-type="Basic Overview">Basic</option>
+														  <option value="devices" data-report-type="Device Types" selected>Device Types</option>
+														  <option value="daily" data-report-type="Daily Activity" >Daily Traffic Report</option>
+														  <option value="countries" data-report-type="Traffic by Top 100 Countries" >Countries</option>
+														  <option value="regions" data-report-type="Traffic by Top Regions" >Regions</option>
+														  <option value="technologies" data-report-type="Popular Operating Systems" >Operating Systems</option>
+														</select>
 
 												</div>
+
+												<div class="col-md-6">
+												  	
+												  	<h4>Time Range</h4> <br>
+
+												  	<select class="form-control" name="report_range">
+												  		<!-- <option value="" selected disabled>--- Date Range ---</option> -->
+														  <option value="today">Today</option>
+														  <option value="seven_days">Past Seven Days</option>
+														  <option value="one_month">Past Month</option>
+														  <option value="three_months" selected>Past 3 Months</option>
+														  <option value="one_year">1 Year</option>
+														</select>
+
+												</div>
+
 
 											</div>
 
 										</div>
 
-
-										
-
-										<div class="form-group">
-										  <div class="col-md-2 pull-right">
-										    <div class="pull-right">
-										      <button type="submit" name="generate_report" class="btn btn-primary generate-report btn-lg">Generate Report!</button>
-										    </div>
-										  </div>
-										</div>
-
-										<br><br>
-
-									</form>
-
-								</div>
-
-              </div>
-              
-              <!-- Advanced Reports Tab -->
-
-              <div class="bhoechie-tab-content">
-								
-								<div class="col-lg-12 col-md-10 col-sm-10 col-xs-10 pull-right">
+									</div>
 
 
-									<form method="POST" action="report" id="ga-query-builder" >
+									
 
-										<fieldset>
-										
-										<input type="hidden" name="_token" value="{{ Session::token() }}">
-										<input type="hidden" name="account" value="54979859">
-										<input type="hidden" name="property" value="UA-54979859-1">
-										<input type="hidden" name="view" value="91404392">
-										<input type="hidden" name="sort" value="-ga:users">
-						 
-										<br>
+									<div class="form-group">
+									  <div class="col-md-2 pull-right">
+									    <div class="pull-right">
+									      <button type="submit" name="generate_report" class="btn btn-primary generate-report btn-lg">Generate Report!</button>
+									    </div>
+									  </div>
+									</div>
 
-										<div class="form-group">
+									<br><br>
 
-											<div class="row">
+								</form>
 
-												<div class="col-md-12">
+							</div>
 
-													<div class="col-md-3">
-													  	
-													  	<h4>From</h4>
+	      </div>
+	      
+	      <!-- Advanced Reports Tab -->
 
-													  	<input type="text" id="start-datetimepicker" name="start_date" value="2015-01-01" >
+	      <div class="bhoechie-tab-content">
+							
+			<div class="col-lg-12 col-md-10 col-sm-10 col-xs-10 pull-right">
 
-													</div>
+				<form method="POST" action="report" id="ga-query-builder" >
 
-													<div class="col-md-3">
-													  	
-													  	<h4>To</h4>
+					<fieldset>
+					
+					<input type="hidden" name="_token" value="{{ Session::token() }}">
+					<input type="hidden" name="account" value="54979859">
+					<input type="hidden" name="property" value="UA-54979859-1">
+					<input type="hidden" name="view" value="91404392">
+					<input type="hidden" name="sort" value="-ga:users">
+	 
+					<br>
 
-													  	<input type="text" id="end-datetimepicker" name="end_date" value="2015-02-15" >
+					<div class="form-group">
 
-													</div>
+						<div class="row">
 
-													<div class="col-md-3">
-													  	
-													  	<h4>Filters</h4>
+							<div class="col-md-12">
 
-													  	<input type="text" id="filters" name="filters"  >
+								<div class="col-md-3">
+								  	
+								  	<h4>From</h4>
 
-													</div>
-
-													<div class="col-md-3">
-													  	
-													  	<h4>Max Results</h4>
-
-													  	<input type="text" id="max_results" name="max_results" value="100" >
-
-													</div>
-
-												</div>
-
-											</div>
-
-										</div>
-
-
-										<div class="form-group">
-										  
-										  <div class="col-md-6">
-										  	<h4>Dimensions</h4>
-										    <select id="dimensions" name="dimensions[]" id="dimensions" class="form-control ga-select-groups" multiple>
-										      @foreach( $dimensions as $key => $group )
-										        <optgroup label="{{ $key }}" >
-										        @foreach( $group as $dimension )
-										          <option value="{{ $dimension->id }}">{{ $dimension->attributes->uiName }}</option>
-										        @endforeach
-										        </optgroup>
-										      @endforeach
-										    </select>
-
-										  </div>
-										</div>
-						          
-										<div class="form-group">
-										  <div class="col-md-6">
-											<h4>Metrics</h4>
-										    <select id="metrics" name="metrics[]" id="metrics" class="form-control ga-select-groups" multiple>
-										      @foreach( $metrics as $key => $group )
-										        <optgroup label="{{ $key }}" >
-										        @foreach( $group as $metric )
-										          <option value="{{ $metric->id }}">{{ $metric->attributes->uiName }}</option>
-										        @endforeach
-										        </optgroup>
-										      @endforeach
-										    </select>
-										  </div>
-										</div>
-
-										<div class="form-group">
-										  <div class="col-sm-offset-2 col-sm-10">
-										    <div class="pull-right">
-										      <button type="submit" name="generate_report" class="btn btn-primary generate-report btn-lg">Generate Report!</button>
-										    </div>
-										  </div>
-										</div>
-
-										<br><br>
-
-									</form>
+								  	<input type="text" id="start-datetimepicker" name="start_date" value="2015-01-01" >
 
 								</div>
 
-              </div>
+								<div class="col-md-3">
+								  	
+								  	<h4>To</h4>
 
-          </div>
-      </div>
+								  	<input type="text" id="end-datetimepicker" name="end_date" value="2015-02-15" >
+
+								</div>
+
+								<div class="col-md-3">
+								  	
+								  	<h4>Filters</h4>
+
+								  	<input type="text" id="filters" name="filters"  >
+
+								</div>
+
+								<div class="col-md-3">
+								  	
+								  	<h4>Max Results</h4>
+
+								  	<input type="text" id="max_results" name="max_results" value="100" >
+
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+
+					<div class="form-group">
+					  
+					  <div class="col-md-6">
+					  	<h4>Dimensions</h4>
+					    <select id="dimensions" name="dimensions[]" id="dimensions" class="form-control ga-select-groups" multiple>
+					      @foreach( $dimensions as $key => $group )
+					        <optgroup label="{{ $key }}" >
+					        @foreach( $group as $dimension )
+					          <option value="{{ $dimension->id }}">{{ $dimension->attributes->uiName }}</option>
+					        @endforeach
+					        </optgroup>
+					      @endforeach
+					    </select>
+
+					  </div>
+					</div>
+	          
+					<div class="form-group">
+					  <div class="col-md-6">
+						<h4>Metrics</h4>
+					    <select id="metrics" name="metrics[]" id="metrics" class="form-control ga-select-groups" multiple>
+					      @foreach( $metrics as $key => $group )
+					        <optgroup label="{{ $key }}" >
+					        @foreach( $group as $metric )
+					          <option value="{{ $metric->id }}">{{ $metric->attributes->uiName }}</option>
+					        @endforeach
+					        </optgroup>
+					      @endforeach
+					    </select>
+					  </div>
+					</div>
+
+					<div class="form-group">
+					  <div class="col-sm-offset-2 col-sm-10">
+					    <div class="pull-right">
+					      <button type="submit" name="generate_report" class="btn btn-primary generate-report btn-lg">Generate Report!</button>
+					    </div>
+					  </div>
+					</div>
+
+					<br><br>
+
+				</form>
+
+			</div>
+
+	      </div>
+
+	  </div>
+
+	</div>
+
+	<!-- Report Panel -->
+
+	<div class="row">
+
+		<div class="col-md-12" id="generated-report">
+
+		</div>
+
+	</div>
 	
-
-	
-
 </div>
 
 <!-- Report Modal -->
+
 <div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -388,13 +395,13 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 		$(document).ready(function() {
 
     		/*-------------------------------
-				|	        
-				|          Datetimepicker
-				|
-				|--------------------------------
-				|
-				|
-				*/
+			|	        
+			|          Datetimepicker
+			|
+			|--------------------------------
+			|
+			|
+			*/
 
     		$('#start-datetimepicker').datetimepicker({
 
@@ -411,13 +418,13 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
     		reportModal = $('#myModal')
 
     		/*------------------------------------
-				|	        
-				|  Google Analytics Packaged Reports
-				|
-				|-------------------------------------
-				|
-				|
-				*/
+			|	        
+			|  Google Analytics Packaged Reports
+			|
+			|-------------------------------------
+			|
+			|
+			*/
 
     		$('#ga-packaged-reports').submit(function() {
 
@@ -429,13 +436,15 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 
 						success: function(data) {
 
-							$('#report-modal').html(data)
+							// $('#report-modal').html(data)
 
-								report_type = $('#report_package option:selected').data('report-type')
+							// report_type = $('#report_package option:selected').data('report-type')
 
-								$('#myModalLabel').html( report_type )
+							// $('#myModalLabel').html( report_type )
 
-								reportModal.modal('show')
+							// reportModal.modal('show')
+
+							$('#generated-report').html( data )
 							
 						},
 
@@ -452,13 +461,13 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 				});
 
     		/*-------------------------------
-				|	        
-				| Google Analytics Query Builder
-				|
-				|--------------------------------
-				|
-				|
-				*/
+			|	        
+			| Google Analytics Query Builder
+			|
+			|--------------------------------
+			|
+			|
+			*/
 
     		$('#ga-query-builder').submit(function() {
 
@@ -496,9 +505,9 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 
   			$('#myModal').on('hidden.bs.modal', function (e) {
   			
-  				// do something...
-				
-				})
+				// do something...
+			
+			})
 
  		});
 

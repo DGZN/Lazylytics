@@ -14,6 +14,9 @@
 	#daily-line{
 		position: relative;
 		margin: 0 auto;
+		margin-bottom: 400px;
+		width: 1200px;
+		height: 450px;
 	}
 
 	</style>
@@ -23,9 +26,9 @@
 
 @section('content')
 
-	<div class="container report-panel devices">
+	<div class="container report-panel devices">		
 		
-		<div id="daily-line" style="height: 350px; width: 250px;"></div>
+		<div id="daily-line" style="width: 1200px;"></div>
 
 	</div>
 
@@ -42,19 +45,24 @@
 	<script type="text/javascript">
 
 		Morris.Line({
+		  
 		  element: 'daily-line',
+		  
 		  data: [
-		    { y: '2006', a: 100, b: 90 },
-		    { y: '2007', a: 75,  b: 65 },
-		    { y: '2008', a: 50,  b: 40 },
-		    { y: '2009', a: 75,  b: 65 },
-		    { y: '2010', a: 50,  b: 40 },
-		    { y: '2011', a: 75,  b: 65 },
-		    { y: '2012', a: 100, b: 90 }
+
+		  @forEach ( $items as $item )
+
+		  	{ y: "{{ $item[0] }}" , a: "{{ $item[1] }}" },
+
+		  @endforEach
+
+
 		  ],
+
 		  xkey: 'y',
-		  ykeys: ['a', 'b'],
-		  labels: ['Series A', 'Series B']
+		  ykeys: ['a'],
+		  labels: ['Users'],
+		  
 		});
 
 	</script>

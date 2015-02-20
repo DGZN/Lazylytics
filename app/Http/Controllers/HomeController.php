@@ -166,9 +166,12 @@ class HomeController extends Controller {
 
 	    $reportView = ( isset( $payload['report_view'] ) ? $payload['report_view'] : 'report' );
 
+	    $filter = ( isset( $payload['filter']) ) ? $payload['filter'] : null ;
+
 	    $report = $this->GoogleAnalytics->report( $payload );
 
-	    
+	    if( ! is_null( $filter) ) $report = $this->filter( $report, $filter );
+
 	    foreach ( $report['columnHeaders'] as $key => $column ) {
 	    
 	    	$report['columnHeaders'][$key]['name'] = ucfirst( str_replace( 'ga:', '', $report['columnHeaders'][$key]['name'] ) );
@@ -304,6 +307,9 @@ class HomeController extends Controller {
 				
 				$payload['dimensions']  = ['ga:date'];
 				$payload['metrics']     = ['ga:users'];
+				$payload['report_view'] = 'reports.daily';
+				$payload['filter']      = 'daily';
+
 
 				break;
 
@@ -373,6 +379,27 @@ class HomeController extends Controller {
 		
 
 		return $payload;
+	}
+
+	private function filter( $report, $filter )
+	{
+		switch ( $filter ) {
+
+			case 'daily':
+				
+				foreach ( $report['items'] as $key => $date ) {
+
+					$formattedDate = \DateTime::createFromFormat('Ymd', $date[0]);
+
+					$report['items'][$key][0] = $formattedDate->format('Y-m-d');
+
+				}
+
+				break;
+			
+		}
+
+		return $report;
 	}
 
 }
