@@ -47,6 +47,12 @@ Route::get('/reports', function(){
 
 });
 
+Route::get('/full', function(){
+
+	return View::make('reports.full');
+
+});
+
 Route::get('home', 'PagesController@home');
 
 Route::get('about', 'PagesController@about');

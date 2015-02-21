@@ -2,21 +2,27 @@
 
 @section('header-styles')
 
-	<link rel="stylesheet" href="cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+	<link rel="stylesheet" href="/css/morris.css">
 
 
 	<style>
 
-	.container.report-panel{
-		width: 500px;
+	.container.daily-report-panel{
+		
 	}
 
 	#daily-line{
 		position: relative;
+		top: 5px;
 		margin: 0 auto;
-		margin-bottom: 400px;
-		width: 1200px;
+		width: 100%;
+		min-width: 800px;
 		height: 450px;
+	}
+
+	.morris-hover {
+		font-weight: bold;
+		font-size: 26px;
 	}
 
 	</style>
@@ -26,9 +32,20 @@
 
 @section('content')
 
-	<div class="container report-panel devices">		
+	<div class="container-fluid daily-report-panel devices">
+
+	<!-- <div class="panel panel-default">
+	  <div class="panel-heading">
+	    <h3 class="panel-title">Daily Traffic Report</h3>
+	  </div>
+	  <div class="panel-body">
+	    Panel content
+	  </div>
+	</div> -->	
 		
-		<div id="daily-line" style="width: 1200px;"></div>
+		<input type="hidden" id="display-panel-type" value="inline" >
+
+		<div id="daily-line" style="width: 100%;"></div>
 
 	</div>
 
@@ -52,7 +69,7 @@
 
 		  @forEach ( $items as $item )
 
-		  	{ y: "{{ $item[0] }}" , a: "{{ $item[1] }}" },
+		  	{ y: "{{ $item[0] }}" , Users: "{{ $item[1] }}" },
 
 		  @endforEach
 
@@ -60,8 +77,18 @@
 		  ],
 
 		  xkey: 'y',
-		  ykeys: ['a'],
+		  ykeys: ['Users'],
 		  labels: ['Users'],
+		  lineWidth: 3,
+		  pointSize: 0,
+		  fillOpacity: '1.0',
+		  hideHover: true,
+
+		  yLabelFormat: function(y){
+
+		  	return y.toString()
+
+		  }
 		  
 		});
 

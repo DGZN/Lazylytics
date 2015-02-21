@@ -25,6 +25,8 @@
 
 	<div class="container report-panel devices">
 		
+		<input type="hidden" id="display-panel-type" value="inline" >
+		
 		<div id="devices-donut" style="height: 350px; width: 250px;"></div>
 
 	</div>

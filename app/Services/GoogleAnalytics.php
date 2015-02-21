@@ -12,7 +12,7 @@ class GoogleAnalytics{
 	private function init()
 	{
 
-		 /*
+	   /*
 		 
 		 'app_name'          => 'Ninja Lytics',
 	   'client_id'         => '354545452053-bmmgpfqaijb2n47jmua6b71ahe1vi4cl.apps.googleusercontent.com',
@@ -21,8 +21,8 @@ class GoogleAnalytics{
 
 	   */
 
-	  $this->client->setClientId( '354545452053-bmmgpfqaijb2n47jmua6b71ahe1vi4cl.apps.googleusercontent.com' );
-	  $this->client->setClientSecret( 'MD-UPcUCT03MrnImCsiO__ln' );
+	  $this->client->setClientId('354545452053-bmmgpfqaijb2n47jmua6b71ahe1vi4cl.apps.googleusercontent.com' );
+	  $this->client->setClientSecret('MD-UPcUCT03MrnImCsiO__ln' );
 	  $this->client->setDeveloperKey( 'AIzaSyBIQx18M5W_38_fbnqjQexFdN30XBzvuHo' );
 	  $this->client->setRedirectUri('http://lazylytics.io/gaOauth');
 	  $this->client->setScopes(array('https://www.googleapis.com/auth/analytics'));
@@ -206,48 +206,44 @@ class GoogleAnalytics{
 	public function report( $payload )
 	{
 
-    $dimensions = implode( ",", $payload['dimensions'] );
-    $metrics    = implode( ",", $payload['metrics'] );
- 
-    try{
+        $dimensions = implode( ",", $payload['dimensions'] );
+        $metrics    = implode( ",", $payload['metrics'] );
 
-        $analytics = new \Google_Service_Analytics($this->client);
-        $options = [];
- 
-        $options['dimensions']  = $dimensions;
-        $options['segment']     = 'gaid::-1';
-        
-        ( ! empty($payload['sort']) ? $options['sort'] = $payload['sort'] : '');
-        ( ! empty($payload['filters']) ? $options['filters'] = $payload['filters'] : '');
+        $options = array( 'dimensions' => $dimensions, 'segment'    => 'gaid::-1' );
+            
+        // Move to payload builder 
+
+        ( ! empty($payload['sort'])        ? $options['sort']        = $payload['sort'] : '');
+        ( ! empty($payload['filters'])     ? $options['filters']     = $payload['filters'] : '');
         ( ! empty($payload['max_results']) ? $options['max-results'] = $payload['max_results'] : '');
+     
+        try {
 
-        $data = $analytics->data_ga->get( 
+            $analytics = new \Google_Service_Analytics($this->client);
+            
+            $data = $analytics->data_ga->get( $payload['view'], $payload['range']['start_date'], $payload['range']['end_date'], $metrics, $options );
 
-        	$payload['view'], 
-        	$payload['range']['start_date'], 
-        	$payload['range']['end_date'], 
-        	$metrics,
-          $options
+            \Log::info( 'Processed: [ ' . $data->selfLink . ' ]' );
 
-        );
- 
-        $res = [
+            $response = [
 
-            'items'         => isset( $data['rows'] ) ? $data['rows'] : [],
-            'columnHeaders' => $data['columnHeaders'],
-            'totalResults'  => $data['totalResults']
+                'items'         => isset( $data['rows'] ) ? $data['rows'] : [],
+                'columnHeaders' => $data['columnHeaders'],
+                'totalResults'  => $data['totalResults']
 
-        ];
- 
-    }catch( Google_ServiceException $ex ){
-        
-        return \Response::json([
-            'message'   => 'Google Analytics Internal Server Error: (Technical details) ' . $ex->getErrors()[0]['message']
-        ]);
+            ];
+     
+        } catch ( \Google_ServiceException $ex ){
+            
+            return \Response::json([
 
-    }
- 
-    return $res;
+                'message'   => 'Google Analytics Internal Server Error: (Technical details) ' . $ex->getErrors()[0]['message']
+
+            ]);
+
+        }
+     
+        return $response;
 
 	}
 

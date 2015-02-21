@@ -28,9 +28,9 @@
 }
 
 
-#myModal .modal-dialog {
+#reportModal .modal-dialog {
 
-	 width: 1200px; 
+	 width: 600px; 
 
 }
 
@@ -127,31 +127,39 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 
 	<div class="report-generator col-lg-12 col-md-12 bhoechie-tab-container">
 
-	  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 bhoechie-tab-menu">
+		<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 bhoechie-tab-menu">
 
-	    <div class="list-group">
+		    <div class="list-group">
 
-	      <a href="#" class="list-group-item active text-center">
-	      
-	        <h4 class="glyphicon glyphicon-briefcase"></h4> <br/>Packaged Reports
-	      
-	      </a>
-	      
-	      <a href="#" class="list-group-item text-center">
-	      
-	        <h4 class="glyphicon glyphicon-cog"></h4> <br/> Advanced Reports
-	      
-	      </a>
+		      <a href="#" class="list-group-item active text-center">
+		      
+		        <h4 class="glyphicon glyphicon-briefcase"></h4> <br/>Packaged Reports
+		      
+		      </a>
+		      
+		      <a href="#" class="list-group-item text-center">
+		      
+		        <h4 class="glyphicon glyphicon-cog"></h4> <br/> Advanced Reports
+		      
+		      </a>
 
-	    </div>
+		      <a href="#" class="list-group-item text-center">
+		      
+		        <h4 class="glyphicon glyphicon-cog"></h4> <br/> Generated Reports Reports
+		      
+		      </a>
 
-		  </div>
+		    </div>
 
-	  <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 bhoechie-tab">
+		    <p></p>
+
+		</div>
+
+		<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 bhoechie-tab">
 	      
-	      <!-- Packaged Reports Tab -->
+			<!-- Packaged Reports Tab -->
 
-	      <div class="bhoechie-tab-content active">
+			<div class="bhoechie-tab-content active">
 							
 							<div class="col-lg-12 col-md-10 col-sm-10 col-xs-10 pull-right">
 
@@ -193,13 +201,13 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 												  	
 												  	<h4>Time Range</h4> <br>
 
-												  	<select class="form-control" name="report_range">
+												  	<select class="form-control" name="report_range" id="report_range">
 												  		<!-- <option value="" selected disabled>--- Date Range ---</option> -->
-														  <option value="today">Today</option>
-														  <option value="seven_days">Past Seven Days</option>
-														  <option value="one_month">Past Month</option>
-														  <option value="three_months" selected>Past 3 Months</option>
-														  <option value="one_year">1 Year</option>
+														  <option value="today" data-report-range="Today">Today</option>
+														  <option value="seven_days" data-report-range="In The Last Week">Past Week</option>
+														  <option value="one_month" data-report-range="In The Past Month">Past Month</option>
+														  <option value="three_months" data-report-range="In The Past 3 Months" selected>Past 3 Months</option>
+														  <option value="one_year" data-report-range="In The Last Year">1 Year</option>
 														</select>
 
 												</div>
@@ -228,120 +236,272 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 
 							</div>
 
-	      </div>
+			</div>
 	      
-	      <!-- Advanced Reports Tab -->
+	      	<!-- Advanced Reports Tab -->
 
-	      <div class="bhoechie-tab-content">
+			<div class="bhoechie-tab-content">
 							
-			<div class="col-lg-12 col-md-10 col-sm-10 col-xs-10 pull-right">
+				<div class="col-lg-12 col-md-10 col-sm-10 col-xs-10 pull-right">
 
-				<form method="POST" action="report" id="ga-query-builder" >
+					<form method="POST" action="report" id="ga-query-builder" >
 
-					<fieldset>
-					
-					<input type="hidden" name="_token" value="{{ Session::token() }}">
-					<input type="hidden" name="account" value="54979859">
-					<input type="hidden" name="property" value="UA-54979859-1">
-					<input type="hidden" name="view" value="91404392">
-					<input type="hidden" name="sort" value="-ga:users">
-	 
-					<br>
+						<fieldset>
+						
+							<input type="hidden" name="_token" value="{{ Session::token() }}">
+							<input type="hidden" name="account" value="54979859">
+							<input type="hidden" name="property" value="UA-54979859-1">
+							<input type="hidden" name="view" value="91404392">
+							<input type="hidden" name="sort" value="-ga:users">
+			 
+							<br>
 
-					<div class="form-group">
+							<div class="form-group">
 
-						<div class="row">
+								<div class="row">
 
-							<div class="col-md-12">
+									<div class="col-md-12">
 
-								<div class="col-md-3">
-								  	
-								  	<h4>From</h4>
+										<div class="col-md-3">
+										  	
+										  	<h4>From</h4>
 
-								  	<input type="text" id="start-datetimepicker" name="start_date" value="2015-01-01" >
+										  	<input type="text" id="start-datetimepicker" name="start_date" value="2015-01-01" >
 
-								</div>
+										</div>
 
-								<div class="col-md-3">
-								  	
-								  	<h4>To</h4>
+										<div class="col-md-3">
+										  	
+										  	<h4>To</h4>
 
-								  	<input type="text" id="end-datetimepicker" name="end_date" value="2015-02-15" >
+										  	<input type="text" id="end-datetimepicker" name="end_date" value="2015-02-15" >
 
-								</div>
+										</div>
 
-								<div class="col-md-3">
-								  	
-								  	<h4>Filters</h4>
+										<div class="col-md-3">
+										  	
+										  	<h4>Filters</h4>
 
-								  	<input type="text" id="filters" name="filters"  >
+										  	<input type="text" id="filters" name="filters"  >
 
-								</div>
+										</div>
 
-								<div class="col-md-3">
-								  	
-								  	<h4>Max Results</h4>
+										<div class="col-md-3">
+										  	
+										  	<h4>Max Results</h4>
 
-								  	<input type="text" id="max_results" name="max_results" value="100" >
+										  	<input type="text" id="max_results" name="max_results" value="100" >
+
+										</div>
+
+									</div>
 
 								</div>
 
 							</div>
 
-						</div>
 
-					</div>
+							<div class="form-group">
+							  
+							  <div class="col-md-6">
 
+							  	<h4>Dimensions</h4>
 
-					<div class="form-group">
-					  
-					  <div class="col-md-6">
-					  	<h4>Dimensions</h4>
-					    <select id="dimensions" name="dimensions[]" id="dimensions" class="form-control ga-select-groups" multiple>
-					      @foreach( $dimensions as $key => $group )
-					        <optgroup label="{{ $key }}" >
-					        @foreach( $group as $dimension )
-					          <option value="{{ $dimension->id }}">{{ $dimension->attributes->uiName }}</option>
-					        @endforeach
-					        </optgroup>
-					      @endforeach
-					    </select>
+							    <select id="dimensions" name="dimensions[]" id="dimensions" class="form-control ga-select-groups" multiple>
+							      @foreach( $dimensions as $key => $group )
+							        <optgroup label="{{ $key }}" >
+							        @foreach( $group as $dimension )
+							          <option value="{{ $dimension->id }}">{{ $dimension->attributes->uiName }}</option>
+							        @endforeach
+							        </optgroup>
+							      @endforeach
+							    </select>
 
-					  </div>
-					</div>
-	          
-					<div class="form-group">
-					  <div class="col-md-6">
-						<h4>Metrics</h4>
-					    <select id="metrics" name="metrics[]" id="metrics" class="form-control ga-select-groups" multiple>
-					      @foreach( $metrics as $key => $group )
-					        <optgroup label="{{ $key }}" >
-					        @foreach( $group as $metric )
-					          <option value="{{ $metric->id }}">{{ $metric->attributes->uiName }}</option>
-					        @endforeach
-					        </optgroup>
-					      @endforeach
-					    </select>
-					  </div>
-					</div>
+							  </div>
 
-					<div class="form-group">
-					  <div class="col-sm-offset-2 col-sm-10">
-					    <div class="pull-right">
-					      <button type="submit" name="generate_report" class="btn btn-primary generate-report btn-lg">Generate Report!</button>
+							</div>
+			          
+							<div class="form-group">
+
+							  <div class="col-md-6">
+
+								<h4>Metrics</h4>
+
+							    <select id="metrics" name="metrics[]" id="metrics" class="form-control ga-select-groups" multiple>
+							      @foreach( $metrics as $key => $group )
+							        <optgroup label="{{ $key }}" >
+							        @foreach( $group as $metric )
+							          <option value="{{ $metric->id }}">{{ $metric->attributes->uiName }}</option>
+							        @endforeach
+							        </optgroup>
+							      @endforeach
+							    </select>
+
+							  </div>
+
+							</div>
+
+							<div class="form-group">
+
+							  <div class="col-sm-offset-2 col-sm-10">
+							    <div class="pull-right">
+							      <button type="submit" name="generate_report" class="btn btn-primary generate-report btn-lg">Generate Report!</button>
+							    </div>
+							  </div>
+
+							</div>
+
+						</fieldset>
+
+						<br><br>
+
+					</form>
+
+				</div>
+
+	      	</div>
+
+	      	<!-- Generated Reports Tab -->
+
+			<div class="bhoechie-tab-content">
+							
+				<div class="col-lg-12 col-md-10 col-sm-10 col-xs-10 pull-right">
+
+					<div class="row">
+
+					  <div class="col-sm-6 col-md-4">
+
+					    <div class="thumbnail">
+
+					      <img src="" alt="">
+
+					      <div class="caption">
+
+					        <h3>Thumbnail label</h3>
+					        <p>...</p>
+					        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+					      
+					      </div>
+
 					    </div>
+
 					  </div>
+
+					  <div class="col-sm-6 col-md-4">
+
+					    <div class="thumbnail">
+
+					      <img src="" alt="">
+
+					      <div class="caption">
+
+					        <h3>Thumbnail label</h3>
+					        <p>...</p>
+					        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+					      
+					      </div>
+
+					    </div>
+
+					  </div>
+
+					  <div class="col-sm-6 col-md-4">
+
+					    <div class="thumbnail">
+
+					      <img src="" alt="">
+
+					      <div class="caption">
+
+					        <h3>Thumbnail label</h3>
+					        <p>...</p>
+					        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+					      
+					      </div>
+
+					    </div>
+
+					  </div>
+
+					  <div class="col-sm-6 col-md-4">
+
+					    <div class="thumbnail">
+
+					      <img src="" alt="">
+
+					      <div class="caption">
+
+					        <h3>Thumbnail label</h3>
+					        <p>...</p>
+					        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+					      
+					      </div>
+
+					    </div>
+
+					  </div>
+
+					  <div class="col-sm-6 col-md-4">
+
+					    <div class="thumbnail">
+
+					      <img src="" alt="">
+
+					      <div class="caption">
+
+					        <h3>Thumbnail label</h3>
+					        <p>...</p>
+					        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+					      
+					      </div>
+
+					    </div>
+
+					  </div>
+
+					  <div class="col-sm-6 col-md-4">
+
+					    <div class="thumbnail">
+
+					      <img src="" alt="">
+
+					      <div class="caption">
+
+					        <h3>Thumbnail label</h3>
+					        <p>...</p>
+					        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+					      
+					      </div>
+
+					    </div>
+
+					  </div>
+
+					  <div class="col-sm-6 col-md-4">
+
+					    <div class="thumbnail">
+
+					      <img src="" alt="">
+
+					      <div class="caption">
+
+					        <h3>Thumbnail label</h3>
+					        <p>...</p>
+					        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+					      
+					      </div>
+
+					    </div>
+
+					  </div>
+
 					</div>
 
-					<br><br>
-
-				</form>
+				</div>
 
 			</div>
 
-	      </div>
-
-	  </div>
+	  	</div>
 
 	</div>
 
@@ -359,12 +519,12 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 
 <!-- Report Modal -->
 
-<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade bs-example-modal-lg" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">
+        <h4 class="modal-title" id="reportModalLabel">
         	
         </h4>
       </div>
@@ -378,6 +538,12 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
     </div>
   </div>
 </div>
+
+<!---->
+
+<!-- Shadow DOM -->
+
+<div id="shadow-dom" style="display: none; width: 1px; height: 1px; overflow: hidden; "></div>
 
 <!---->
 
@@ -415,7 +581,19 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 
     		});
 
-    		reportModal = $('#myModal')
+    		reportModal = $('#reportModal')
+
+    		reportModal.on('shown.bs.modal', function () {
+    		
+    			$('#myInput').focus()
+
+ 			});
+
+ 			reportModal.on('hidden.bs.modal', function (e) {
+  			
+				//reportModal.html('')
+			
+			})
 
     		/*------------------------------------
 			|	        
@@ -428,37 +606,61 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 
     		$('#ga-packaged-reports').submit(function() {
 
+			    $('#generated-report').html('')
+
 			    $.ajax({
 
-						type: "POST",
-						url: '/packaged',
-						data: $("#ga-packaged-reports").serialize(),
+					type: "POST",
+					url: '/packaged',
+					data: $("#ga-packaged-reports").serialize(),
 
-						success: function(data) {
+					success: function(data) {
 
-							// $('#report-modal').html(data)
+						$('#shadow-dom').html(data)
 
-							// report_type = $('#report_package option:selected').data('report-type')
+						var displayPanelType = ( $('#display-panel-type').val() != undefined ) ? $('#display-panel-type').val() : 'modal'
 
-							// $('#myModalLabel').html( report_type )
+						$('#shadow-dom').html('')
 
-							// reportModal.modal('show')
+						switch ( displayPanelType ) {
 
-							$('#generated-report').html( data )
-							
-						},
+						    case 'inline':
+						        
+						    	$('#generated-report').html( data )
 
-						error: function(e){
+						        break;
+						    
+						    case 'modal':
+						        
+								if ( displayPanelType === 'inline' ) return $('#generated-report').html( data )
 
-							console.error(e)
+								$('#report-modal').html(data)
 
+								report_type = $('#report_package option:selected').data('report-type')
+
+								report_range = $('#report_range option:selected').data('report-range')
+
+								$('#reportModalLabel').html( report_type + ' ' + report_range )
+
+								reportModal.modal('show')
+
+						        break;
+						    
 						}
+						
+					},
 
-					});
+					error: function(e){
+
+						console.error(e)
+
+					}
+
+				});
 
 			    return false;
 
-				});
+			});
 
     		/*-------------------------------
 			|	        
@@ -473,43 +675,34 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 
 			    $.ajax({
 
-						type: "POST",
-						url: '/report',
-						data: $("#ga-query-builder").serialize(),
+					type: "POST",
+					url: '/report',
+					data: $("#ga-query-builder").serialize(),
 
-						success: function(data) {
+					success: function(data) {
 
-							$('#report-modal').html(data)
+						$('#report-modal').html(data)
 
-								reportModal.modal('show');
-							
-						},
+							reportModal.modal('show');
+						
+					},
 
-						error: function(e){
+					error: function(e){
 
-							console.error(e)
+						console.error(e)
 
-						}
-
-					});
-
-			    return false;
+					}
 
 				});
 
-				$('#myModal').on('shown.bs.modal', function () {
-    		
-    			$('#myInput').focus()
-  			
-  			})
+			    return false;
 
-  			$('#myModal').on('hidden.bs.modal', function (e) {
-  			
-				// do something...
-			
-			})
+			});
 
- 		});
+				
+  			
+  		})
+
 
  		/*-------------------------------
 		|	        
@@ -522,16 +715,16 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 
  		$(document).ready( function() {
 
-	    $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
-	      
-	        e.preventDefault();
-	        $(this).siblings('a.active').removeClass("active");
-	        $(this).addClass("active");
-	        var index = $(this).index();
-	        $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
-	        $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+		    $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
+		      
+		        e.preventDefault();
+		        $(this).siblings('a.active').removeClass("active");
+		        $(this).addClass("active");
+		        var index = $(this).index();
+		        $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
+		        $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
 
-	    });
+		    });
 
 		});
 
