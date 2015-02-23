@@ -1,23 +1,9 @@
 <?php
 
+
 use Carbon\Carbon;
 
-Route::get('/debug', function(){
-
-	$dates = array(
-
-		'now' 			=> Carbon::now()->toDateString(),
-		'yesterday'     => Carbon::now()->yesterday()->toDateString(), 
-		'seven days'    => Carbon::now()->subWeek(1)->toDateString(),
-		'one month'     => Carbon::now()->subMonth()->toDateString(),
-		'three months'  => Carbon::now()->subMonths(3)->toDateString(),
-		'one year'      => Carbon::now()->subYear()->toDateString()
-
-	);
-
-	return $dates;
-
-});
+Route::get('/debug', 'HomeController@fetch');
 
 Route::get('/', 'HomeController@index');
 
@@ -37,21 +23,21 @@ Route::get('/segments', 'HomeController@segments');
 
 Route::get('/builder', 'HomeController@builder');
 
+Route::get('/explorer', 'HomeController@explorer');
+
 Route::post('/report', 'HomeController@report');
 
 Route::post('/packaged', 'HomeController@packaged');
 
+Route::post('/update', 'HomeController@updateRange');
+
 Route::get('/reports', function(){
 
-	return View::make('reports.index');
+	return View::make('reports.template');
 
 });
 
-Route::get('/full', function(){
-
-	return View::make('reports.full');
-
-});
+Route::get('/full', 'HomeController@full');
 
 Route::get('home', 'PagesController@home');
 

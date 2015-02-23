@@ -82,7 +82,7 @@ class HomeController extends Controller {
 	    }
 	    else{
 
-	        return "Invalide request parameters";
+	        return "Invalid request parameters";
 
 	    }
 
@@ -132,6 +132,26 @@ class HomeController extends Controller {
 
 	}
 
+	public function explorer()
+	{
+
+		if( ! $this->GoogleAnalytics->isLoggedIn() ) return \Redirect::to( $this->GoogleAnalytics->getLoginUrl() );
+
+
+        $metadata   = $this->metadata();
+        $dimensions = $metadata['dimensions'];
+        $metrics    = $metadata['metrics'];
+         
+        return \View::make('reports', [ 
+
+            'dimensions' => $dimensions, 
+            'metrics' => $metrics
+
+        ]);
+
+
+	}
+
 	public function builder()
 	{
 
@@ -152,6 +172,52 @@ class HomeController extends Controller {
 
 	}
 
+	public function updateRange()
+	{
+
+		if ( ! $this->GoogleAnalytics->isLoggedIn() ) return \Response::json([ 'message'   => 'Login required' ]);
+
+		if ( ! \Input::has('report_range') ) return \Response::json([ 'message'   => 'Range Must Be Set' ]);
+
+		$report_range = \Input::get('report_range');
+
+		return $report = $this->fetch( $report_range );
+
+	}
+
+	public function full()
+	{
+		$report = $this->fetch('one_month');
+		
+		return \View::make('reports.full')
+					->with( ['report' => $report] );
+	}
+
+	public function fetch( $range )
+	{
+
+		if( ! $this->GoogleAnalytics->isLoggedIn() ) return \Redirect::to( $this->GoogleAnalytics->getLoginUrl() );
+		
+		$payload = array(
+
+			"view"        => "ga:91404392",
+			"dimensions"  => array("ga:date"),
+			"metrics"     => array("ga:users","ga:sessions","ga:bounceRate","ga:avgSessionDuration","ga:pageviews","ga:newUsers"),
+			"report_view" => "reports.daily",
+			"filter"      => "daily"
+
+		);
+
+		$payload = $this->range( $payload, $range );
+
+		$report = $this->GoogleAnalytics->report( $payload );
+
+		$report['status'] = true;
+
+		return $this->filter( $report, 'full' );
+
+	}
+
 	public function packaged()
 	{
     
@@ -163,6 +229,8 @@ class HomeController extends Controller {
 	    $view =  'ga:' . \Input::get('view');
 
 	    $payload = $this->buildPackagePayload( $view, \Input::get('report_package'), \Input::get('report_range') );
+
+	    return $payload;
 
 	    $reportView = ( isset( $payload['report_view'] ) ? $payload['report_view'] : 'report' );
 
@@ -221,6 +289,8 @@ class HomeController extends Controller {
 
 	    $report = $this->GoogleAnalytics->report( $payload );
 
+	    //return $report;
+
 
 	    foreach ( $report['columnHeaders'] as $key => $column ) {
 	    
@@ -228,19 +298,19 @@ class HomeController extends Controller {
 
 	    }
 
-	    foreach ( $report['items'] as $key => $item ) {
+	    // foreach ( $report['items'] as $key => $item ) {
 
-	    	if ( ! is_array($item) ) continue;
+	    // 	if ( ! is_array($item) ) continue;
 
-	    	foreach( $item as $subKey => $value ) {
+	    // 	foreach( $item as $subKey => $value ) {
 
-	    		if ( floatval($value) <= 0 ) continue;
+	    // 		if ( floatval($value) <= 0 ) continue;
 
-	    		$report['items'][$key][$subKey] = number_format( floatval($value), 0 );
+	    // 		$report['items'][$key][$subKey] = number_format( floatval($value), 0 );
 
-	    	}
+	    // 	}
 
-	    }
+	    // }
 	 
 	    return \View::make('report', [ 
 
@@ -381,6 +451,71 @@ class HomeController extends Controller {
 		return $payload;
 	}
 
+	private function range( $payload, $range )
+	{
+		switch ( $range ) {
+
+			case 'today':
+
+				$payload['range'] = array(
+
+					'start_date' => Carbon::now()->yesterday()->toDateString(),
+					'end_date'   => Carbon::now()->toDateString()
+
+				);
+
+				break;
+
+			case 'seven_days':
+
+				$payload['range'] = array(
+
+					'start_date' => Carbon::now()->subWeek(1)->toDateString(),
+					'end_date'   => Carbon::now()->toDateString()
+
+				);
+
+
+				break;
+
+			case 'one_month':
+
+				$payload['range'] = array(
+
+					'start_date' => Carbon::now()->subMonth()->toDateString(),
+					'end_date'   => Carbon::now()->toDateString()
+
+				);
+
+				break;
+
+			case 'three_months':
+
+				$payload['range'] = array(
+
+					'start_date' => Carbon::now()->subMonths(3)->toDateString(),
+					'end_date'   => Carbon::now()->toDateString()
+
+				);
+
+				break;
+
+			case 'one_year':
+
+				$payload['range'] = array(
+
+					'start_date' => Carbon::now()->subYear()->toDateString(),
+					'end_date'   => Carbon::now()->toDateString()
+
+				);
+
+				break;
+			
+		}
+
+		return $payload;
+	}
+
 	private function filter( $report, $filter )
 	{
 		switch ( $filter ) {
@@ -394,6 +529,48 @@ class HomeController extends Controller {
 					$report['items'][$key][0] = $formattedDate->format('Y-m-d');
 
 				}
+
+				break;
+
+			case 'full':
+				
+				$report['pageviews'] = 0;
+				$report['sessions'] = 0;
+				$report['bounceRate'] = 0;
+				$report['avgSessionDuration'] = 0;
+				$report['newUsers'] = 0;
+
+				$report['lineData'] = [];
+
+
+				foreach ( $report['items'] as $key => $value ) {
+
+					$formattedDate = \DateTime::createFromFormat('Ymd', $value[0]);
+
+					$report['items'][$key][0] = $formattedDate->format('Y-m-d');
+
+					$report['newUsers'] 		  += $value[6];
+					$report['sessions'] 		  += $value[2];
+					$report['pageviews']		  += $value[5];
+					$report['bounceRate'] 		  += $value[3];
+					$report['avgSessionDuration'] += $value[4];
+
+					$report['lineData'][] = array(
+
+						'y'         => $formattedDate->format('Y-m-d'),
+						'Users'		=> $value[1],
+						'Sessions'	=> $value[2],
+						'Pageviews' => $value[5]
+
+					);
+
+
+				}
+
+				$report['pageviews']  = $report['pageviews'];
+				$report['sessions']   = $report['sessions'];
+				$report['bounceRate'] = number_format( ( $report['bounceRate'] / $report['totalResults'] ) );
+				$report['newUsers']   = $report['newUsers'];
 
 				break;
 			

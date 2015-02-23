@@ -658,7 +658,7 @@ div.bhoechie-tab div.bhoechie-tab-content:not(.active){
 
 				});
 
-			    return false;
+			    //return false;
 
 			});
 

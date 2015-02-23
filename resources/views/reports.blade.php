@@ -3,7 +3,8 @@
 @section('header-styles')
 <style>
 select[multiple] {
-  height: 130px;
+  width: 500px;
+  height: 300px;
 }
 </style>
 @endsection

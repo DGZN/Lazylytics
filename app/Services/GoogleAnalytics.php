@@ -2,34 +2,19 @@
 
 class GoogleAnalytics{
     
-	public function __construct( \Google_Client $client ) {
+	public function __construct( \Google_Client $client ) 
+    {
 	    
 		$this->client = $client;
-		$this->init();
+		
+        $this->client->setClientId('354545452053-bmmgpfqaijb2n47jmua6b71ahe1vi4cl.apps.googleusercontent.com' );
+        $this->client->setClientSecret('MD-UPcUCT03MrnImCsiO__ln' );
+        $this->client->setDeveloperKey( 'AIzaSyBIQx18M5W_38_fbnqjQexFdN30XBzvuHo' );
+        $this->client->setRedirectUri('http://lazylytics.io/gaOauth');
+        $this->client->setScopes(array('https://www.googleapis.com/auth/analytics'));
 
 	}
-	 
-	private function init()
-	{
-
-	   /*
-		 
-		 'app_name'          => 'Ninja Lytics',
-	   'client_id'         => '354545452053-bmmgpfqaijb2n47jmua6b71ahe1vi4cl.apps.googleusercontent.com',
-	   'client_secret'     => 'MD-UPcUCT03MrnImCsiO__ln',
-	   'api_key'           => 'AIzaSyBIQx18M5W_38_fbnqjQexFdN30XBzvuHo'
-
-	   */
-
-	  $this->client->setClientId('354545452053-bmmgpfqaijb2n47jmua6b71ahe1vi4cl.apps.googleusercontent.com' );
-	  $this->client->setClientSecret('MD-UPcUCT03MrnImCsiO__ln' );
-	  $this->client->setDeveloperKey( 'AIzaSyBIQx18M5W_38_fbnqjQexFdN30XBzvuHo' );
-	  $this->client->setRedirectUri('http://lazylytics.io/gaOauth');
-	  $this->client->setScopes(array('https://www.googleapis.com/auth/analytics'));
-
-
-	}
-
+	
 	public function isLoggedIn()
 	{
 	    
