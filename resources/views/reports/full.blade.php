@@ -272,7 +272,7 @@ body {
         axes: true,
         grid: false,
         gridTextFamily: 'Lato',
-        gridTextSize: 12,
+        gridTextSize: 14,
         gridTextColor: 'rgba(255,255,255,.8)',
         gridTextWeight: 400,
         hideHover: true,
@@ -289,7 +289,7 @@ body {
 
     function updateReport( range ) {
 
-      $('#daily-line').velocity({ opacity: .01 } , { duration: 800 });
+      clearStats()
 
       $.ajax({
 
@@ -349,8 +349,8 @@ body {
 
               from: 0, 
               to: parseFloat( data.bounceRate ),
-              speed: 200,
-              refreshInterval: 1,
+              speed: 100,
+              refreshInterval: 5,
 
               formatter: function (value, options) {
           
@@ -383,11 +383,58 @@ body {
 
     function clearStats() {
 
-      $('#sessions').html('0')
+      $('#daily-line').velocity({ opacity: .01 } , { duration: 800 });
 
-      $('#pageviews').html('0')
+      var sessions = parseFloat( $('#sessions').html().replace(/[^\d\.\-eE+]/g, "") )
 
-      $('#bounceRate').html('0%')
+      var pageviews = parseFloat( $('#pageviews').html().replace(/[^\d\.\-eE+]/g, "") )
+
+      var bounceRate = parseFloat( $('#bounceRate').html().replace('%', "") )
+
+      $('#sessions').countTo({ 
+
+        from: sessions, 
+        to: 0,
+        speed: 1000,
+        refreshInterval: 100,
+
+        formatter: function (value, options) {
+    
+         return number_format( value.toFixed(options.decimals) );
+  
+        },
+
+      })
+
+      $('#pageviews').countTo({ 
+
+        from: pageviews, 
+        to: 0,
+        speed: 1000,
+        refreshInterval: 10,
+
+        formatter: function (value, options) {
+
+         return number_format( value.toFixed(options.decimals) );
+  
+        },
+
+      })
+
+      $('#bounceRate').countTo({ 
+
+        from: bounceRate, 
+        to: 0,
+        speed: 250,
+        refreshInterval: 5,
+
+        formatter: function (value, options) {
+    
+         return number_format( value.toFixed(options.decimals) ) + '%';
+  
+        },
+
+      })
 
     }
 
