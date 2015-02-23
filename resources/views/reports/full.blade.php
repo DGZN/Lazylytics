@@ -288,8 +288,8 @@ body {
     })
 
     function updateReport( range ) {
-      
-      $('#daily-line').fadeOut(1200)
+
+      $('#daily-line').velocity({ opacity: .01 } , { duration: 800 });
 
       $.ajax({
 
@@ -310,7 +310,7 @@ body {
 
             dailyLineGraph.setData( data.lineData )
 
-            $('#daily-line').fadeIn(1500)
+            $('#daily-line').velocity({ opacity: 1 } , { duration: 800 });
 
             var currentSessionCount = parseFloat( $('#sessions').html() )
 
