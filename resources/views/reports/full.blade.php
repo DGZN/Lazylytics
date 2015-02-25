@@ -20,7 +20,7 @@ body {
   margin: 0 auto;
   width: 100%;
   min-width: 800px;
-  height: 550px;
+  height: 460px;
   cursor: pointer;
 }
 
@@ -57,7 +57,7 @@ body {
 }
 
 .row.stats {
-  margin-bottom: 1em;
+  margin-bottom: .5em;
 }
 
 
@@ -79,8 +79,8 @@ body {
           <select class="form-control" name="report_range" id="report_range">
             <!-- <option value="" selected disabled>--- Date Range ---</option> -->
             <option value="today" data-report-range="Today">Today</option>
-            <option value="one_month" data-report-range="In The Past Month">1 Month</option>
-            <option value="seven_days" data-report-range="In The Last Week" selected>1 Week</option>
+            <option value="seven_days" data-report-range="In The Last Week">1 Week</option>
+            <option value="one_month" data-report-range="In The Past Month" selected>1 Month</option>
             <option value="three_months" data-report-range="In The Past 3 Months" >3 Months</option>
             <option value="one_year" data-report-range="In The Last Year" >1 Year</option>
           </select>
@@ -89,7 +89,7 @@ body {
 
       </div>
 
-      <div class="row stats">
+      <div class="row" id="stats">
 
         <div class="col-sm-6 col-md-4">
           <div class="panel panel-success panel-stat">
@@ -306,19 +306,20 @@ body {
 
           if ( data.status ) {
 
+            $('#stats').velocity({ opacity: 1 } , { duration: 200 });
+
             $('#sessions').html( data.sessions )
 
             dailyLineGraph.setData( data.lineData )
 
-            $('#daily-line').velocity({ opacity: 1 } , { duration: 800 });
-
-            var currentSessionCount = parseFloat( $('#sessions').html() )
+            $('#daily-line').velocity({ opacity: 1 } , { duration: 1200 });
+            
 
             $('#sessions').countTo({ 
 
               from: 0, 
               to: parseFloat( data.sessions ),
-              speed: 1000,
+              speed: 800,
               refreshInterval: 50,
 
               formatter: function (value, options) {
@@ -333,7 +334,7 @@ body {
 
               from: 0, 
               to: parseFloat( data.pageviews ),
-              speed: 1000,
+              speed: 500,
               refreshInterval: 100,
 
               formatter: function (value, options) {
@@ -357,6 +358,8 @@ body {
                 return value.toFixed(options.decimals) + '%';
         
               }
+
+
 
             })
 
@@ -385,6 +388,9 @@ body {
 
       $('#daily-line').velocity({ opacity: .01 } , { duration: 800 });
 
+      $('#stats').velocity({ opacity: .25 } , { duration: 800 });
+
+
       var sessions = parseFloat( $('#sessions').html().replace(/[^\d\.\-eE+]/g, "") )
 
       var pageviews = parseFloat( $('#pageviews').html().replace(/[^\d\.\-eE+]/g, "") )
@@ -395,46 +401,51 @@ body {
 
         from: sessions, 
         to: 0,
-        speed: 1000,
-        refreshInterval: 100,
-
-        formatter: function (value, options) {
-    
-         return number_format( value.toFixed(options.decimals) );
-  
-        },
-
-      })
-
-      $('#pageviews').countTo({ 
-
-        from: pageviews, 
-        to: 0,
-        speed: 1000,
+        speed: 600,
         refreshInterval: 10,
 
         formatter: function (value, options) {
-
-         return number_format( value.toFixed(options.decimals) );
-  
-        },
-
-      })
-
-      $('#bounceRate').countTo({ 
-
-        from: bounceRate, 
-        to: 0,
-        speed: 250,
-        refreshInterval: 5,
-
-        formatter: function (value, options) {
     
-         return number_format( value.toFixed(options.decimals) ) + '%';
+         console.log(value)
+         // var formatted = number_format( value.toFixed(options.decimals) )
+
+         // return formatted
   
         },
 
       })
+
+      // $('#pageviews').countTo({ 
+
+      //   from: pageviews, 
+      //   to: 0,
+      //   speed: 750,
+      //   refreshInterval: 10,
+
+      //   formatter: function (value, options) {
+
+      //     var formatted = number_format( value.toFixed(options.decimals) )
+
+      //     return formatted
+  
+      //   },
+
+      // })
+
+      // $('#bounceRate').countTo({ 
+
+      //   from: bounceRate, 
+      //   to: 0,
+      //   speed: 500,
+      //   refreshInterval: 2,
+
+      //   formatter: function (value, options) {
+    
+      //    return number_format( value.toFixed(options.decimals) ) + '%';
+  
+      //   },
+
+      // })
 
     }
 

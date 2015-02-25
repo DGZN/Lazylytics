@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Services\GoogleAnalytics;
+use App\Services\Google_Service_Exception;
 
 use Carbon\Carbon;
 
@@ -78,7 +79,7 @@ class HomeController extends Controller {
 
 	        $this->GoogleAnalytics->login($code);
 	         
-	        return "Go to the home <a href='/'>page</a>";
+	        return \Redirect::to('/full');
 	    }
 	    else{
 
@@ -187,7 +188,7 @@ class HomeController extends Controller {
 
 	public function full()
 	{
-		$report = $this->fetch('one_month');
+		if ( ! $report = $this->fetch('one_month') ) return \Response::json(['status' => false, 'message' => 'Google API oAuth Token Invalid']);
 		
 		return \View::make('reports.full')
 					->with( ['report' => $report] );
@@ -210,7 +211,17 @@ class HomeController extends Controller {
 
 		$payload = $this->range( $payload, $range );
 
-		$report = $this->GoogleAnalytics->report( $payload );
+		try {
+			
+			$report = $this->GoogleAnalytics->report( $payload );
+		    
+		} catch ( \Google_Auth_Exception $exception ) {
+		
+		    return false;
+		
+		}
+
+		
 
 		$report['status'] = true;
 
